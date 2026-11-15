@@ -123,4 +123,4 @@ codeql:
           run: | 
           echo "Publicando o commit ${GITHUB_SHA::7} no ambiente: $AMBIENTE" 
           echo "Pacote: app-staging.tar.gz" 
-          echo "Deploy concluído com sucesso (simulado)." 
+          echo "Deploy concluído com sucesso (simulado)."
