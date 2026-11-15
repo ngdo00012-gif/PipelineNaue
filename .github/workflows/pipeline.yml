@@ -93,34 +93,34 @@ jobs:
         with: 
           fail-on-severity: high 
   
-  deploy-staging: 
-    name: Deploy no staging 
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' 
-    needs: [testes, codeql, segredos] 
-    runs-on: ubuntu-latest 
-    environment: 
-      name: staging 
-      url: ${{ vars.STAGING_URL }} 
-    steps: 
-      - name: Baixar o código 
-        uses: actions/checkout@v7 
+  deploy-staging:
+    name: Deploy no staging
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [testes, codeql, segredos]
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+      url: ${{ vars.STAGING_URL }}
+    steps:
+      - name: Baixar o código
+        uses: actions/checkout@v4
 
-      - name: Empacotar a aplicação 
-        run: | 
-          mkdir pacote 
-          cp app.py requirements.txt pacote/ 
-          tar -czf app-staging.tar.gz -C pacote . 
+      - name: Empacotar a aplicação
+        run: |
+          mkdir pacote
+          cp app.py requirements.txt pacote/
+          tar -czf app-staging.tar.gz -C pacote .
 
-      - name: Guardar o pacote 
-        uses: actions/upload-artifact@v7 
-        with: 
-          name: app-staging 
-          path: app-staging.tar.gz 
+      - name: Guardar o pacote
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-staging
+          path: app-staging.tar.gz
 
       - name: Publicar no staging (simulado)
-      env: 
+        env:
           AMBIENTE: ${{ vars.APP_ENV }}
-          run: | 
-          echo "Publicando o commit ${GITHUB_SHA::7} no ambiente: $AMBIENTE" 
-          echo "Pacote: app-staging.tar.gz" 
+        run: |
+          echo "Publicando o commit ${GITHUB_SHA::7} no ambiente: $AMBIENTE"
+          echo "Pacote: app-staging.tar.gz"
           echo "Deploy concluído com sucesso (simulado)."
